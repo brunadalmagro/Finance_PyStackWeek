@@ -1,0 +1,60 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+
+{% block 'head' %}
+<link href="{% static 'perfil/css/home.css' %}" rel="stylesheet" />
+<link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet" />
+<link href="{% static 'extrato/css/view_extrato.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block 'body' %}
+<div class="container">
+  <br />
+  <br />
+  <div class="row">
+    <div class="col-md-2 text-center"></div>
+    <div class="col-md">
+      <div class="card">
+        
+        <p>Total de Gastos<p>
+          <span style="float: left !important">R$ {{ categoria.total_gasto }}</span>
+          <span style="float: right !important">R$ {{ categoria.calcula_percentual_gasto_total }}</span>
+        <div class="progress">
+          <div
+            class="progress-bar bg-info"
+            role="progressbar"
+            style="width: {{ calcula_percentual_gasto_total }}%"
+            aria-valuenow="{{ calcula_percentual_gasto_total }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+        </div>
+        </div>
+        <hr>
+
+        {% for categoria in categorias %}
+        <p>{{ categoria.categoria }}</p>
+        <div>
+          <span style="float: left !important">R$ {{ categoria.total_gasto }}</span>
+          <span style="float: right !important">R$ {{ categoria.valor_planejamento }}</span>
+        </div>
+        <div class="progress">
+          <div
+            class="progress-bar progress-bar-striped bg-info"
+            role="progressbar"
+            style="width: {{ categoria.calcula_percentual_gasto_por_categoria }}%"
+            aria-valuenow="{{ categoria.calcula_percentual_gasto_por_categoria }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+        <hr>
+        {% endfor %}
+        
+
+      </div>
+    </div>
+    <div class="col-md-2 text-center"></div>
+  </div>
+</div>
+{% endblock %}

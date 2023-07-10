@@ -1,0 +1,89 @@
+<!-- definir_planejamento.html -->
+
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+    <link href="{% static 'perfil/css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet">
+    <link href="{% static 'extrato/css/view_extrato.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-pzjw8fs+965CPRyH9/1Qd">
+
+{% endblock %}
+
+{% block 'body' %}
+
+    <div class="container">
+        <br>
+        <br>
+        <p class="fonte-destaque">Definir planejamento</p>
+
+        <!-- Adicione o código para exibir a mensagem de cadastrado com sucesso -->
+        {% if messages %}
+            <div class="alert alert-success" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="card">
+            <table>
+                <tr>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                    <th>Ação</th>
+                </tr>
+
+                {% for categoria in categorias %}
+                    <tr class="linha">
+                        <td>{{categoria}}</td>
+                        <td><input id="valor-categoria-{{categoria.id}}" type="text" class="form-control" value="{{categoria.valor_planejamento}}"></td>
+                        <td><button onclick="update_valor_planejamento_categoria({{categoria.id}})" style="width: 100%;" class="btn btn-primary">Salvar</button></td>         
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+ 
+<script>
+    function update_valor_planejamento_categoria(id) {
+        var valor = document.getElementById('valor-categoria-' + id).value;
+        console.log(valor);
+
+        fetch("/planejamento/update_valor_categoria/" + id, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ novo_valor: valor })
+        })
+        .then(function(result) {
+            return result.json();
+        })
+        .then(function(data) {
+            console.log(data);
+
+            // Exibe a mensagem de cadastrado com sucesso
+            showMessage('Cadastro realizado com sucesso');
+
+            // Redireciona para a página desejada
+            window.location.href = '/ver_planejamento/';
+        });
+    }
+
+    function showMessage(message) {
+        var messagesElement = document.getElementById('messages');
+        var messageElement = document.createElement('div');
+        messageElement.className = 'alert alert-success';
+        messageElement.textContent = message;
+        messagesElement.appendChild(messageElement);
+
+        // Define um tempo limite para remover a mensagem
+        setTimeout(function() {
+            messageElement.remove();
+        }, 3000);
+    }
+</script>
+
+{% endblock %}

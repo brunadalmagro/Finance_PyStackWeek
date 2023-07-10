@@ -1,0 +1,139 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+    <link href="{% static 'perfil/css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'perfil/css/gerenciar.css' %}" rel="stylesheet">
+    <style>
+        .linha-conta {
+            background-color: var(--dark-color);
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block 'body' %}
+
+    <div class="container">
+        <br>
+        <div class="row">
+
+            <div class="col-md-8">
+                <p class="fonte-destaque" style="color: red;">Contas vencidas</p>
+                <div class="card">
+                    {% if not contas_vencidas %}
+                        <p class="fonte-destaque">Sem contas vencidas, campeão!</p>
+                    {% else %}
+                        {% for conta in contas_vencidas %}
+                            <div class="linha-conta">
+                                <div class="row">
+                                    <div class="col-md text-center">
+                                        {{ conta }}
+                                    </div>
+                                    <div class="col-md text-center">
+                                        Dia: {{ conta.dia_pagamento }}
+                                    </div>
+                                    <div class="col-md text-center">
+                                        <a href="#" class="botao-principal" data-conta-id="{{ conta.id }}">PAGAR</a>
+                                    </div> 
+                                </div>
+                                <br>
+                            
+                            </div>
+                        {% endfor %}
+                    {% endif %}       
+                </div>
+                <br>
+                <br>
+                <p class="fonte-destaque" style="color: #E96363;">Contas próximas do vencimento</p>
+                <div class="card">
+                    {% if not contas_proximas %}
+                        <p class="fonte-destaque">Tudo certo por aqui!</p>
+                    {% else %}
+                        <div class="linha-conta">
+                            <div class="row">
+                                <div class="col-md text-center">
+                                    Luz
+                                </div>
+                                <div class="col-md text-center">
+                                    Dia: 1
+                                </div>
+                                <div class="col-md text-center">
+                                    <a href="#" class="botao-principal" data-conta-id="{{ conta.id }}">PAGAR</a>
+                                </div> 
+                                <br>
+                            </div>
+                            <br>
+                        </div>
+                    {% endif %}
+                </div>
+                <br>
+                <br>
+                <p class="fonte-destaque">Restantes</p>
+                <div class="card">
+                    {% if not restantes %}
+                        <p class="fonte-destaque">Ufa, nenhuma conta restante!</p>
+                    {% else %}
+                        {% for conta in restantes %}
+                            <div class="linha-conta">
+                                <div class="row">
+                                    <div class="col-md text-center">
+                                        {{ conta }}
+                                    </div>
+                                    <div class="col-md text-center">
+                                        Dia: {{ conta.dia_pagamento }}
+                                    </div>
+                                    <div class="col-md text-center">
+                                        <a href="#" class="botao-principal" data-conta-id="{{ conta.id }}">PAGAR</a>
+                                    </div> 
+                                </div>
+                                <br>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4">
+            </div>
+
+        </div>
+    </div>
+    
+    <script>
+        // Função para marcar a conta como paga
+        function marcarContaComoPaga(contaId) {
+            fetch("/pagar_conta/" + contaId, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({})
+            })
+            .then(function(result) {
+                return result.json();
+            })
+            .then(function(data) {
+                console.log(data);
+    
+                // Exibe a mensagem de pagamento realizado com sucesso
+                showMessage('Pagamento realizado com sucesso');
+    
+                // Recarrega a página para atualizar a lista de contas
+                location.reload();
+            });
+        }
+    
+        // Adiciona o evento de clique nos botões "pagar"
+        var buttons = document.querySelectorAll('.botao-principal');
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                var contaId = event.target.getAttribute('data-conta-id');
+                marcarContaComoPaga(contaId);
+            });
+        });
+    </script>
+    
+
+{% endblock %}
