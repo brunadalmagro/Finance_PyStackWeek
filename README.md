@@ -1,6 +1,7 @@
 # Finance_PyStackWeek
 
 ### Status
+# [![Estado do Projeto](https://img.shields.io/badge/Estado-Em%20Desenvolvimento-yellow)](https://link-do-seu-projeto-em-desenvolvimento)
 
 # Descrição:
 Esta é aplicação web desenvolvida com Django, que permite aos usuários gerenciar e definir metas de planejamento financeiro para diferentes categorias. 
