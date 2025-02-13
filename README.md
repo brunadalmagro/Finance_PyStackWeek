@@ -58,4 +58,4 @@ A página inicial oferece uma visão geral das finanças do usuário, com seçõ
 
 ---
 
-** Feito com Django e muito café ☕. **
+**Feito com Django e muito café ☕.**
